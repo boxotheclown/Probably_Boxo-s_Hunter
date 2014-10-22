@@ -29,11 +29,11 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 
 -- Misdirect
 	{{
-		{ "Misdirect", { "focus.exists", "!player.buff(Misdirect)" }, "focus" },
-		{ "Misdirect", {
+		{ "34477", { "focus.exists", "!player.buff(35079)" }, "focus" },
+		{ "34477", {
 			"pet.exists",
 			"!pet.dead",
-			"!player.buff(Misdirect)",
+			"!player.buff(35079)",
 			"!focus.exists",
 			"target.threat > 85"
 		}, "pet" },
