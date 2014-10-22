@@ -1,0 +1,8 @@
+## Interface: 60000
+## Title: Probably - Boxo's Hunter
+## Notes: ProbablyEngine Custom Rotation
+## Dependencies: Probably
+
+beastmastery.lua
+marksman.lua
+survival.lua
