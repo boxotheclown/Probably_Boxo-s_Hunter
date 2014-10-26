@@ -8,10 +8,13 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 
 -- interrupt
 	{ "147362", "target.interruptAt(30)" }, -- Counter Shot at 70% cast time left
-
+	{ "Tranquilizing Shot", { "target.dispellable(Tranquilizing Shot)", "!target.charmed", "!target.state.charm", "!target.debuff(Touch of Y'Shaarj)", "!target.debuff(Empowered Touch of Y'Shaarj)", "!target.buff(Touch of Y'Shaarj)", "!target.buff(Empowered Touch of Y'Shaarj)" }, "target" },
 -- pet stuff
 	{ "Heart of the Phoenix", "pet.dead" }, -- heart of the phoenix
 	{ "Revive Pet", "pet.dead" }, -- revive pet
+
+-- CC chain
+--	{ "Freezing Trap", { "focus.exists", "focus.debuff.duration < 10" }, "focus.ground" },
 	
 -- defensives
 	{ "109304", "player.health < 50" }, -- Exhiliration
@@ -23,9 +26,16 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 		"!pet.dead",
 		"!pet.buff(136)"
 	}},
-
+	
 -- trap
 	{ "Explosive Trap", "modifier.lcontrol", "mouse.ground" }, -- explosive trap
+--	{ "Ice Trap", "modifier.lalt", "ground" },
+	{ "Binding Shot", "modifier.lalt", "ground" },
+
+-- pet pause
+--	{ "Concussive Shot" },
+
+--	{ "pause", "target.health < 30" },
 
 -- Misdirect
 	{{
@@ -40,35 +50,58 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 	}, "toggle.md", },
 
 -- cooldowns
+	{ "26297", { "player.spell(26297).exists", "modifier.cooldowns" } }, -- Berserking
+	{ "33697", { "player.spell(33697).exists", "modifier.cooldowns" } }, -- Blood Fury
+	{ "121818", {  -- stampede when boss about to die
+		"player.spell(121818).exists",
+		"modifier.cooldowns",
+		"unit.ttd <= 20"
+	} },
+	{ "121818", {  -- stampede when focus fire up
+		"player.spell(121818).exists",
+		"modifier.cooldowns",
+		"player.buff(Focus Fire)"
+	} },
+	{ "121818", {  -- stampede when bloodlust up
+		"player.spell(121818).exists",
+		"modifier.cooldowns",
+		"player.hashero"
+	} },	
 	{ "120679", "player.spell(120679).exists" }, -- dire beast
-	{ "19574", "player.spell(34026).cooldown = 0" }, -- bestial wrath
+	{ "19574", { -- bestial wrath
+		"player.spell(34026).cooldown = 0",
+		"player.focus > 60",
+		"pet.exists"
+	} }, 
 	
 -- multi-target
 	{{
 
--- 5 + units
+	{ "120360", { "player.spell(120360).exists", "target.area(8).enemies > 2" } }, -- barrage multitarget
+-- 9 + units
 	{{
 
 		{ "2643", "!player.buff(118455).exists" }, -- multishot for beast cleave
-		{ "34026" }, -- kill command
+--		{ "34026", "pet.exists" }, -- kill command
 		{ "2643", "player.focus > 60" }, -- multishot
 		{ "77767", "player.focus <= 60" }, -- cobra shot
---		{ "Steady Shot", "playwer.focus <= 60" }, -- steady shot for lowbies
+--		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
 
-	}, { (function() return UnitsAroundUnit('target', 8) >= 5 end) },
-	},
+	}, "target.area(8).enemies > 8" },
+
 
 -- 2 - 4 units
-		{ "53351", "target.health < 20" }, -- kill shot
-		{ "2643", { "!pet.buff(118455).exists", (function() return UnitsAroundUnit('target', 8) > 2 end) } }, -- multishot for beast cleave (3+)
-		{ "34026" }, -- kill command
+		{ "2643", { "!pet.buff(118455).exists", "target.area(8).enemies > 2" } }, -- multishot for beast cleave (3+)
+		{ "34026", "pet.exists" }, -- kill command
 		{ "2643", "!pet.buff(118455).exists" }, -- multishot for beast cleave (2 targets)
+		{ "53351", "target.health < 20" }, -- kill shot
 		{ "131894", "player.spell(131894).exists" }, -- murder of crows
 		{ "120360", "player.spell(120360).exists" }, -- barrage
 		{ "117050", "player.spell(117050).exists" }, -- glaive toss
 --		{ "82692", "player.buff(19615).count = 5" }, -- yolo focus fire
 		{ "82692", { "player.buff(Frenzy).count = 5", "!player.buff(Bestial Wrath)" } }, -- focus fire outside bestial wrath
 		{ "82692", { "player.buff(Frenzy).count = 5", "player.buff(Bestial Wrath).duration >= 3" } }, -- focus fire inside bestial wrath
+		{ "2643", { "player.focus > 60", "target.area(8).enemies > 1" } }, -- multishot dump
 		{ "3044", "player.focus > 60" }, -- arcane shot dump
 		{ "77767", "player.focus <= 60" }, -- cobra shot
 --		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
@@ -77,9 +110,10 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 
 -- single target
 	{{
+		{ "34026", "pet.exists" }, -- kill command
 		{ "53351", "target.health < 20" }, -- kill shot
-		{ "34026" }, -- kill command
 		{ "131894", "player.spell(131894).exists" }, -- murder of crows
+		{ "77767", "player.buff(Steady Focus)" }, -- steady focus buff
 		{ "120360", "player.spell(120360).exists" }, -- barrage
 		{ "117050", "player.spell(117050).exists" }, -- glaive toss
 --		{ "82692", "player.buff(Frenzy).count = 5" }, -- yolo focus fire
@@ -95,7 +129,8 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 -- out of combat
 {
  	{ "pause","player.buff(5384)" }, -- Pause for Feign Death
-	
+	{ "Freezing Trap", "modifier.lalt", "mouse.ground" },
+--	{ "Freezing Trap", { "focus.exists", "focus.debuff.duration < 10" }, "focus.ground" },
 }, function()
 ProbablyEngine.toggle.create('md', 'Interface\\Icons\\ability_hunter_misdirection', 'Auto Misdirect', 'Automatially Misdirect when necessary')
 

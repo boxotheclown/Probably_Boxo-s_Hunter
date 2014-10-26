@@ -39,52 +39,62 @@ ProbablyEngine.rotation.register_custom(254, "Boxo's Marksman", {
 		}, "pet" },
 	}, "toggle.md", },
 
+
+
 -- cooldowns
+	{ "26297", { "player.spell(26297).exists", "modifier.cooldowns" } }, -- Berserking
+	{ "33697", { "player.spell(33697).exists", "modifier.cooldowns" } }, -- Blood Fury
 	{ "120679", "player.spell(120679).exists" }, -- dire beast
 	{ "3045", "modifier.cooldowns" }, -- rapid fire
-	
+	{ "121818", { -- stampede w/ rapid fire
+		"player.spell(121818).exists",
+		"modifier.cooldowns",
+		"player.buff(Rapid Fire)"
+	} }, 
+	{ "121818", { -- stampede w/ bloodlust
+		"player.spell(121818).exists",
+		"modifier.cooldowns",
+		"player.hashero"
+	} },
+	{ "121818", { -- stampede time to die 20 seconds
+		"player.spell(121818).exists",
+		"modifier.cooldowns",
+		"target.ttd <= 20"
+	} },
 -- multi-target
 	{{
 
 -- 5 + units
 	{{
 
-		{ "2643", "!player.buff(115939).exists" }, -- multishot
-		{ "34026" }, -- kill command
+		{ "Chimaera Shot" }, -- chimaera shot
 		{ "2643", "player.focus > 60" }, -- multishot
---		{ "77767", "player.focus <= 60" }, -- cobra shot
 		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
 
-	}, { (function() return UnitsAroundUnit('target', 8) >= 5 end) },
-	},
+	}, "target.area(8).enemies > 3" },
+
 
 -- 2 - 4 units
+		{ "Chimaera Shot" }, -- chimaera shot
 		{ "53351", "target.health < 20" }, -- kill shot
-		{ "2643", { "!player.buff(115939).exists", (function() return UnitsAroundUnit('target', 8) >= 3 end) } }, -- multishot for beast cleave (3+)
-		{ "34026" }, -- kill command
-		{ "2643", "!pet.buff(115939).exists" }, -- multishot for beast cleave (2 targets)
+		{ "Aimed Shot", "player.buff(34720).count >= 1" }, -- aimed shot toth
 		{ "131894", "player.spell(131894).exists" }, -- murder of crows
 		{ "120360", "player.spell(120360).exists" }, -- barrage
 		{ "117050", "player.spell(117050).exists" }, -- glaive toss
-		{ "82692", { "player.buff(19623).count = 5", "!player.buff(19574)" } }, -- focus fire outside bestial wrath
-		{ "82692", { "player.buff(19623).count = 5", "player.buff(19574).duration >= 3" } }, -- focus fire inside bestial wrath
-		{ "3044", "player.focus > 60" }, -- arcane shot dump
---		{ "77767", "player.focus <= 60" }, -- cobra shot
+		{ "Aimed Shot", "player.focus > 60" }, -- arcane shot dump
 		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
 
 	} , "modifier.multitarget" },
 
 -- single target
 	{{
+		{ "Chimaera Shot" }, -- chimaera shot
 		{ "53351", "target.health < 20" }, -- kill shot
-		{ "34026" }, -- kill command
+		{ "Aimed Shot", "player.buff(34720).count >= 1" }, -- aimed shot toth
 		{ "131894", "player.spell(131894).exists" }, -- murder of crows
 		{ "120360", "player.spell(120360).exists" }, -- barrage
 		{ "117050", "player.spell(117050).exists" }, -- glaive toss
-		{ "82692", { "player.buff(19623).count = 5", "!player.buff(19574)" } }, -- focus fire outside bestial wrath
-		{ "82692", { "player.buff(19623).count = 5", "player.buff(19574).duration >= 3" } }, -- focus fire inside bestial wrath
-		{ "3044", "player.focus > 60" }, -- arcane shot dump
---		{ "77767", "player.focus <= 60" }, -- cobra shot
+		{ "Aimed Shot", "player.focus > 60" }, -- aimed shot dump
 		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
 
 	} , "!modifier.multitarget" },
