@@ -50,12 +50,15 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 	}, "toggle.md", },
 
 -- cooldowns
-	{ "26297", { "player.spell(26297).exists", "modifier.cooldowns" } }, -- Berserking
-	{ "33697", { "player.spell(33697).exists", "modifier.cooldowns" } }, -- Blood Fury
+	{{ -- racials
+		{ "Arcane Torrent", "player.focus >= 30" }, -- arcane torrent
+		{ "26297", "player.spell(26297).exists" }, -- berserking
+		{ "33697", "player.spell(33697).exists", }, -- Blood Fury
+	}, "modifier.cooldowns", }, 
 	{ "121818", {  -- stampede when boss about to die
 		"player.spell(121818).exists",
 		"modifier.cooldowns",
-		"unit.ttd <= 20"
+		"target.ttd <= 20"
 	} },
 	{ "121818", {  -- stampede when focus fire up
 		"player.spell(121818).exists",
@@ -76,8 +79,9 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 	
 -- multi-target
 	{{
-
-	{ "120360", { "player.spell(120360).exists", "target.area(8).enemies > 2" } }, -- barrage multitarget
+	
+	{ "Explosive Trap", { "target.ttd >= 20", "target.area(10).enemies >  2" }, "ground" }, -- explosive trap
+	{ "120360", { "player.spell(120360).exists", "target.area(10).enemies > 2" } }, -- barrage multitarget
 -- 9 + units
 	{{
 
@@ -92,6 +96,7 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 
 -- 2 - 4 units
 		{ "2643", { "!pet.buff(118455).exists", "target.area(8).enemies > 2" } }, -- multishot for beast cleave (3+)
+		{ "120360", { "player.spell(120360).exists", "target.area(8).enemies > 1" } }, -- barrage
 		{ "34026", "pet.exists" }, -- kill command
 		{ "2643", "!pet.buff(118455).exists" }, -- multishot for beast cleave (2 targets)
 		{ "53351", "target.health < 20" }, -- kill shot
@@ -101,9 +106,9 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 --		{ "82692", "player.buff(19615).count = 5" }, -- yolo focus fire
 		{ "82692", { "player.buff(Frenzy).count = 5", "!player.buff(Bestial Wrath)" } }, -- focus fire outside bestial wrath
 		{ "82692", { "player.buff(Frenzy).count = 5", "player.buff(Bestial Wrath).duration >= 3" } }, -- focus fire inside bestial wrath
-		{ "2643", { "player.focus > 60", "target.area(8).enemies > 1" } }, -- multishot dump
-		{ "3044", "player.focus > 60" }, -- arcane shot dump
-		{ "77767", "player.focus <= 60" }, -- cobra shot
+		{ "2643", { "player.focus > 63", "target.area(8).enemies > 2" } }, -- multishot dump
+		{ "3044", "player.focus > 63" }, -- arcane shot dump
+		{ "77767", "player.focus <= 63" }, -- cobra shot
 --		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
 
 	} , "modifier.multitarget" },
@@ -119,8 +124,8 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 --		{ "82692", "player.buff(Frenzy).count = 5" }, -- yolo focus fire
 		{ "82692", { "player.buff(Frenzy).count = 5", "!player.buff(Bestial Wrath)" } }, -- focus fire outside bestial wrath
 		{ "82692", { "player.buff(Frenzy).count = 5", "player.buff(Bestial Wrath).duration >= 3" } }, -- focus fire inside bestial wrath
-		{ "3044", "player.focus > 60" }, -- arcane shot dump
-		{ "77767", "player.focus <= 60" }, -- cobra shot
+		{ "3044", "player.focus > 63" }, -- arcane shot dump
+		{ "77767", "player.focus <= 63" }, -- cobra shot
 --		{ "Steady Shot", "player.focus <= 60" }, -- steady shot for lowbies
 
 	} , "!modifier.multitarget" },
