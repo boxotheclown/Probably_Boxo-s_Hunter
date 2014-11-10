@@ -14,7 +14,7 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 	{ "Revive Pet", "pet.dead" }, -- revive pet
 
 -- CC chain
---	{ "Freezing Trap", { "focus.exists", "focus.debuff.duration < 10" }, "focus.ground" },
+--	{ "Freezing Trap", { "focus.exists", "focus.debuff(Freezing Trap).duration < 10" }, "focus.ground" },
 	
 -- defensives
 	{ "109304", "player.health < 50" }, -- Exhiliration
@@ -32,11 +32,6 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 --	{ "Ice Trap", "modifier.lalt", "ground" },
 	{ "Binding Shot", "modifier.lalt", "ground" },
 
--- pet pause
---	{ "Concussive Shot" },
-
---	{ "pause", "target.health < 30" },
-
 -- Misdirect
 	{{
 		{ "34477", { "focus.exists", "!player.buff(35079)" }, "focus" },
@@ -48,6 +43,11 @@ ProbablyEngine.rotation.register_custom(253, "Boxo's BM", {
 			"target.threat > 85"
 		}, "pet" },
 	}, "toggle.md", },
+
+  -- Master's Call when stuck
+  { "53271", "player.state.stun" },
+  { "53271", "player.state.root" },
+  { "53271", "player.state.snare" },
 
 -- cooldowns
 	{{ -- racials
